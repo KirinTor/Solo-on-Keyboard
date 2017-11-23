@@ -1,0 +1,26 @@
+.back {
+  background-color: #F0F0F0;
+  margin: 10px 20%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.form {
+  margin: 10px auto;
+}
+
+.inside {
+  display: flex;
+  flex-flow: column;
+}
+
+.inside input {
+  width: 75px;
+  margin: 5px auto;
+}
+
+.back .container {
+  display: flex;
+  flex-flow: column;
+}

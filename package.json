@@ -1,0 +1,31 @@
+{
+  "name": "rentservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "assert": "^1.4.1",
+    "body-parser": "^1.17.2",
+    "cheerio": "^1.0.0-rc.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "fs": "^0.0.1-security",
+    "jsdom": "^11.3.0",
+    "mongodb": "^2.2.31",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.1",
+	"jshint": "^2.9.5"
+  },
+  "scripts": {
+	"start": "node server.js",
+	"test": "mocha",
+	"jshint": "./node_modules/jshint/bin/jshint server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
