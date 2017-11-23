@@ -1,4 +1,5 @@
 language: node_js
+before_script: chmod 0777 ./node_modules/.bin/mocha
 node_js:
  - "node"
 services:
