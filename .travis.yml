@@ -4,7 +4,5 @@ node_js:
 services:
  - mongodb
 before_script:
- - chmod 0777 ./node_modules/.bin/mocha
  - chmod 0777 ./node_modules/.bin/jshint
  - ./node_modules/.bin/jshint server.js
- - npm start
