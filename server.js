@@ -1,12 +1,12 @@
-const express = require('express');
-const app = new express();
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const fs = require("fs");
-const cheerio = require('cheerio');
+var express = require('express');
+var app = new express();
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var fs = require("fs");
+var cheerio = require('cheerio');
 
-const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb://localhost:27017/rentdatabase";
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/rentdatabase";
 
 // Front End directory
 app.use(express.static(__dirname + '/client'));
@@ -35,7 +35,7 @@ MongoClient.connect(url, function(err, db) {
 });
 
 // Start Server
-app.listen(8888, () => {
+app.listen(8888, function() {
     console.log("Server started at localhost:8888");
 });
 
@@ -77,7 +77,7 @@ app.post("/register", function (request, response) {
     });
 
     if(request.body.password1 != request.body.password2) {
-      response.send('Паролі не співпадають')
+      response.send('Паролі не співпадають');
     } else {
       var userobj = {
         login: request.body.email,
@@ -185,7 +185,7 @@ app.post("/saveprofile", function (request, response) {
     address: request.body.address,
     phone: request.body.phone,
     email: request.body.email
-  }
+  };
 
   MongoClient.connect(url, function(err, db) {
   if (err) throw err;
@@ -213,25 +213,23 @@ app.post("/rent", function (request, response) {
 
         var d1 = new Date();
         var d2 = new Date(result[i].term);
-        var d3 = new Date(result[i].activeby)
+        var d3 = new Date(result[i].activeby);
 
         if(d3 < d1 && d2 > d1) {
           console.log(result[i]);
-          var part = `
-            <div>
-              <form class="form" action="/dorent" method="post">
-                <input type="text" name="category" readonly value="${result[i].category}"><br>
-                <input type="text" name="model" readonly value="${result[i].model}"><br>
-                Доступний до:<br>
-                <input type="text" name="term" readonly value="${result[i].term}"><br>
-                Строк оренди (до якої дати):<br>
-                <input type="date" name="activeterm">
-                <br><br>
-                <input type="submit" value="Орендувати">
-              </form>
-              <hr>
-            </div>
-          `;
+          var part = '<div> ' +
+              '<form class="form" action="/dorent" method="post">' +
+                '<input type="text" name="category" readonly value=' + result[i].category + '><br>' +
+                '<input type="text" name="model" readonly value=' + result[i].model + '><br>' +
+                'Доступний до:<br>' +
+                '<input type="text" name="term" readonly value=' + result[i].term + '><br>' +
+                'Строк оренди (до якої дати):<br>' +
+                '<input type="date" name="activeterm">' +
+                '<br><br>' +
+                '<input type="submit" value="Орендувати">' +
+              '</form>' +
+              '<hr>' +
+            '</div>';
 
           $('.container').append(part);
         }
@@ -266,7 +264,7 @@ app.post("/dorent", function (request, response) {
         model: request.body.model,
         term: request.body.term,
         activeby: request.body.activeterm
-      }
+      };
 
       db.collection("cars").updateOne(query, nv, function(err, res) {
         if (err) throw err;
