@@ -23,6 +23,7 @@
   },
   "scripts": {
 	"start": "node server.js",
+	"test": "mocha",
 	"jshint": "./node_modules/jshint/bin/jshint server.js"
   },
   "author": "",

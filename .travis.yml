@@ -3,6 +3,10 @@ node_js:
  - "node"
 services:
  - mongodb
+ - docker
 before_script:
+ - chmod 0777 ./node_modules/.bin/mocha
  - chmod 0777 ./node_modules/.bin/jshint
  - ./node_modules/.bin/jshint server.js
+ - docker-compose up
+ - docker-compose down

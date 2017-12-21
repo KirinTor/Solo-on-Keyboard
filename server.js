@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 var app = new express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -6,7 +6,7 @@ var fs = require("fs");
 var cheerio = require('cheerio');
 
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/rentdatabase";
+var url = "mongodb://database:27017/rentdatabase";
 
 // Front End directory
 app.use(express.static(__dirname + '/client'));
@@ -25,7 +25,7 @@ MongoClient.connect(url, function(err, db) {
   db.createCollection("profiles", function(err1, res) {
       if (err1) throw err1;
       console.log("Profiles collection exists!");
-      db.close();
+      //db.close();
   });
   db.createCollection("cars", function(err1, res) {
       if (err1) throw err1;

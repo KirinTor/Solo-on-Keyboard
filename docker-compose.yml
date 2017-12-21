@@ -1,0 +1,12 @@
+version: "2"
+services:
+  node_app:
+    container_name: node_app
+    restart: always
+    build: .
+    links:
+      - database
+    depends_on:
+      - database
+  database:
+    image: mongo
