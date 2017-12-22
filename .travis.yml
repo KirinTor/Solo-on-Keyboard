@@ -9,4 +9,5 @@ before_script:
  - ./node_modules/.bin/jshint server.js
 after_script:
  - docker-compose up &
+ - sleep 100
  - docker-compose down
