@@ -7,6 +7,6 @@ services:
 before_script:
  - chmod 0777 ./node_modules/.bin/jshint
  - ./node_modules/.bin/jshint server.js
- - docker-compose up &
 after_script:
+ - docker-compose up &
  - docker-compose down
