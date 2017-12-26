@@ -4,9 +4,10 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var fs = require("fs");
 var cheerio = require('cheerio');
+var backoff = require('backoff');
 
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://database:27017/rentdatabase";
+var url = 'mongodb://127.0.0.1:27017/rentdatabase';
 
 // Front End directory
 app.use(express.static(__dirname + '/client'));
@@ -18,26 +19,55 @@ app.use(bodyParser.json());
 // CookieParser
 app.use(cookieParser());
 
-// Check collections in database
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  console.log("Connected to database!");
-  db.createCollection("profiles", function(err1, res) {
-      if (err1) throw err1;
-      console.log("Profiles collection exists!");
-      //db.close();
-  });
-  db.createCollection("cars", function(err1, res) {
-      if (err1) throw err1;
-      console.log("Cars collection exists!");
-      db.close();
-  });
+
+// Checking database connection with backoff
+var call = backoff.call(MongoClient.connect, url,
+function(error, result) {
+    console.log('Num retries: ' + call.getNumRetries());
+ 
+    if (error) {
+        console.log('Error: ' + error);
+    } else {		
+		// Check collections in database
+		MongoClient.connect(url, function(err, db) {
+			if (err) throw err;
+			console.log("Connected to database!");
+			db.createCollection("profiles", function(err1, res) {
+			if (err1) throw err1;
+				console.log("Profiles collection exists!");
+				//db.close();
+			});
+			db.createCollection("cars", function(err1, res) {
+				if (err1) throw err1;
+				console.log("Cars collection exists!");
+				db.close();
+			});
+		});
+		
+		// Start Server
+		app.listen(8888, function() {
+			console.log("Server started at localhost:8888");
+		});
+    }
 });
 
-// Start Server
-app.listen(8888, function() {
-    console.log("Server started at localhost:8888");
+var date = new Date();
+var curr_time = date.getTime();
+var trycounter = 0;
+
+call.retryIf(function(err) { 
+	trycounter++;
+	
+	var date1 = new Date();
+	var curr_time1 = date1.getTime();
+	
+	console.log(trycounter + ': ' + (curr_time1 - curr_time) + ' ms');
+	
+	return err.message.includes('MongoError'); 
 });
+call.setStrategy(new backoff.ExponentialStrategy());
+call.failAfter(8);
+call.start();
 
 
 // Check user cookies

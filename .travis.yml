@@ -3,11 +3,6 @@ node_js:
  - "node"
 services:
  - mongodb
- - docker
 before_script:
  - chmod 0777 ./node_modules/.bin/jshint
  - ./node_modules/.bin/jshint server.js
-after_script:
- - docker-compose up &
- - sleep 100
- - docker-compose down
